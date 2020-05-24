@@ -1,0 +1,410 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Ver anuncio{% endblock %}
+
+{% block contenido %}
+<div class="container">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-5 mb-5">Oferta</h1>
+
+            <form>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Título de la oferta</label>
+                    <div class="col-sm-5">
+                        <label class="col-form-label">{{anuncio[0]}}</label>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Descripción</label>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" type="text" placeholder="" rows="10" cols="20" rows="10" name="verOfertaDesc" readonly>{{anuncio[1]}}</textarea>
+                    </div>
+                </div>
+
+                <div class="d-block my-3 mt-5">
+                    <p>Tipo de trabajo</p>
+                    <div class="custom-control custom-radio">
+                        <input id="dispHora" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.2 == 1%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispHora">Por hora</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="dispJorn" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.2 == 2%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispJorn">Por jornada</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="dispTarea" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.2 == 3%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispTarea">Por tarea puntual</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input id="dispMes" name="disponibilidad" type="radio" class="custom-control-input" required=""
+                               {% if anuncio.2 == 4%}
+                               checked=""
+                               {%else%}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="dispMes">Por mes</label>
+                    </div>
+                </div>
+
+                <div class="d-block my-3 mt-5">
+                    <p>Tareas que realizas:</p>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaOficina" name="tareaOficina" type="checkbox" class="custom-control-input"
+                               {% if 2 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaOficina">Oficina</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaCocina" name="tareaCocina" type="checkbox" class="custom-control-input"
+                               {% if 3 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCocina">Cocinar</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaLimpBañ" name="tareaLimpBañ" type="checkbox" class="custom-control-input"
+                               {% if 4 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaLimpBañ">Limpieza de baños</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaLimpCoc" name="tareaLimpCoc" type="checkbox" class="custom-control-input"
+                               {% if 5 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaLimpCoc">Limpieza de cocina</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaLimpDor" name="tareaLimpDor" type="checkbox" class="custom-control-input"
+                               {% if 6 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaLimpDor">Limpieza de dormitorio</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaCuidNiño" name="tareaCuidNiño" type="checkbox" class="custom-control-input"
+                               {% if 7 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidNiño">Cuidado de niños</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaCuidBebe" name="tareaCuidBebe" type="checkbox" class="custom-control-input"
+                               {% if 8 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidBebe">Cuidado de bebes</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaCuidAdulto" name="tareaCuidAdulto" type="checkbox" class="custom-control-input"
+                               {% if 9 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidAdulto">Cuidado de adultos mayores</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaCuidMasc" name="tareaCuidMasc" type="checkbox" class="custom-control-input"
+                               {% if 10 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaCuidMasc">Cuidado de mascotas</label>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input id="tareaHogar" name="tareaHogar" type="checkbox" class="custom-control-input"
+                               {% if 1 in anuncio.3 %}
+                               checked=""
+                               {% else %}
+                               disabled
+                               {% endif %}>
+                        <label class="custom-control-label" for="tareaHogar">Otras tareas</label>
+                    </div>
+                </div>
+
+                <div class="form-group row mt-5 mb-4">
+                    <label for="staticEmail" class="col-sm-5 col-form-label">Experiencia previa requerida:</label>
+                    <div class="col-sm-2">
+                        <input class="form-control" type="text" name="verOfertaExperiencia" readonly
+                               {% if anuncio.5 == 1 %}
+                               placeholder="SI"
+                               {% else %}
+                               placeholder="NO"
+                               {% endif %}>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 col-form-label">Pago por hora ofrecido</label>
+                    <div class="col-sm-3">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">$</span>
+                            </div>
+                            <input class="form-control" type="text" placeholder={{anuncio.4}} name="verOfertaPaga" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mt-5 mb-5">
+
+
+                <h1 class="display-6 mb-5">Datos del empleador:</h1>
+
+                <div class="text_mobile">
+                    <div class="row mb-5">
+                        <div class="card ml-5 mr-3 mb-3">
+                            <div class="row no-gutters">
+                                <div class="form-group row ml-4 mt-2 mr-3">
+                                    <img class="mb-4" src="{{ url_for('static', filename=empleador.foto)}}" alt="foto de contacto" width="125"
+                                         height="125"><br>
+                                        
+    
+                                </div>
+                                <div class="col-md-8 mt-2">
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            Nombre:<br>
+                                            <strong>{{empleador.nombre}} {{empleador.apellido}}</strong>
+                                        </p>
+                                        <p class="card-text">
+                                            Registro en el BPS:
+                                            <strong>{% if empleador.registroBps == '' or empleador.registroBps == '0'%}No{% else %}Si{% endif %}</strong><br>
+                                        </p>
+    
+                                        {% if empleador.promedioCalificacion %}
+                                        <img class="mt-4 mb-4" style="margin-bottom: 0rem !important; margin: 0.3em !important;" 
+                                          {% if empleador.promedioCalificacion < 1 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                          {% elif empleador.promedioCalificacion >= 1 and empleador.promedioCalificacion < 1.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                          {% elif empleador.promedioCalificacion >= 1.5 and empleador.promedioCalificacion < 2 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                          {% elif empleador.promedioCalificacion >= 2 and empleador.promedioCalificacion < 2.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                          {% elif empleador.promedioCalificacion >= 2.5 and empleador.promedioCalificacion < 3 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                          {% elif empleador.promedioCalificacion >= 3 and empleador.promedioCalificacion < 3.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                          {% elif empleador.promedioCalificacion >= 3.5 and empleador.promedioCalificacion < 4 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                          {% elif empleador.promedioCalificacion >= 4 and empleador.promedioCalificacion < 4.5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                          {% elif empleador.promedioCalificacion >= 4.5 and empleador.promedioCalificacion < 5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                          {% elif empleador.promedioCalificacion == 5 %}
+                                            src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                          {% endif %}
+                                          alt="" width="188" height="41"> 
+                                          <p style="font-size: 0.8em !important; margin-top: 0.1rem !important; margin-left: 1.2rem !important;">
+                                            De {{cal['cantEmpleados']}}
+                                            {% if cal['cantEmpleados'] == 1 %}
+                                            calificante
+                                            {% else %}
+                                            calificantes
+                                            {% endif %}
+                                            por {{cal['cantVinculos']}} 
+                                            {% if cal['cantVinculos'] == 1 %}
+                                            vínculo
+                                            {% else %}
+                                            vínculos
+                                            {% endif %}
+                                          </p>
+                                      {% else %}
+                                      <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                                      {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="div_full">
+                <div class="row mb-5">
+                    <div class="card ml-5 mr-3 mb-3" style="max-width: 550px; min-width: 550px;">
+                        <div class="row no-gutters">
+                            <div class="form-group row ml-4 mt-2 mr-3">
+                                <img class="mb-4" src="{{ url_for('static', filename=empleador.foto)}}" alt="foto de contacto" width="125"
+                                     height="125"><br>
+                                    
+
+                            </div>
+                            <div class="col-md-8 mt-2">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        Nombre:<br>
+                                        <strong>{{empleador.nombre}} {{empleador.apellido}}</strong>
+                                    </p>
+                                    <p class="card-text">
+                                        Registro en el BPS:
+                                        <strong>{% if empleador.registroBps == '' or empleador.registroBps == '0'%}No{% else %}Si{% endif %}</strong><br>
+                                    </p>
+
+                                    {% if empleador.promedioCalificacion %}
+                                    <img class="mt-4 mb-4" style="margin-bottom: 0rem !important; margin: 0.3em !important;" 
+                                      {% if empleador.promedioCalificacion < 1 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                                      {% elif empleador.promedioCalificacion >= 1 and empleador.promedioCalificacion < 1.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                                      {% elif empleador.promedioCalificacion >= 1.5 and empleador.promedioCalificacion < 2 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                                      {% elif empleador.promedioCalificacion >= 2 and empleador.promedioCalificacion < 2.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                                      {% elif empleador.promedioCalificacion >= 2.5 and empleador.promedioCalificacion < 3 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                                      {% elif empleador.promedioCalificacion >= 3 and empleador.promedioCalificacion < 3.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                                      {% elif empleador.promedioCalificacion >= 3.5 and empleador.promedioCalificacion < 4 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                                      {% elif empleador.promedioCalificacion >= 4 and empleador.promedioCalificacion < 4.5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                                      {% elif empleador.promedioCalificacion >= 4.5 and empleador.promedioCalificacion < 5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                                      {% elif empleador.promedioCalificacion == 5 %}
+                                        src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                                      {% endif %}
+                                      alt="" width="188" height="41"> 
+                                      <p style="font-size: 0.8em !important; margin-top: 0.1rem !important; margin-left: 1.2rem !important;">
+                                        De {{cal['cantEmpleados']}}
+                                        {% if cal['cantEmpleados'] == 1 %}
+                                        calificante
+                                        {% else %}
+                                        calificantes
+                                        {% endif %}
+                                        por {{cal['cantVinculos']}} 
+                                        {% if cal['cantVinculos'] == 1 %}
+                                        vínculo
+                                        {% else %}
+                                        vínculos
+                                        {% endif %}
+                                      </p>
+                                  {% else %}
+                                  <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+                                  {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                {% if postulacion == '0' %}
+                <a href="" type="button" class="btn btn-warning float-right" aria-label=""data-toggle="modal"
+                data-target="#modal">
+                  Me interesa. ¡Contactar!</a>
+                {% else %}
+                <a class="btn btn-warning float-right" href=""  aria-label=""data-toggle="modal" 
+                 data-target="#modal2">Despostularme</a>
+                {% endif %}
+                <button type="button" class="btn btn-primary" onClick="history.go(-1)">Volver</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- ************************************************************** MODAL ***************************************************** -->
+
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-body">
+
+            <h2>¿Desea postularse a este anuncio?</h2>
+            <p>
+              <br>
+              Podrá despostularse luego si cambia de opinión. 
+              Mientras usted mantenga 
+              la postulación el empleador puede decidir contratarlo. 
+            </p>
+
+            
+        </div>
+        <div class="modal-footer">
+          <a href="/postularse/{{ anuncio.6 }}" type="button" class="btn btn-success float-right">
+            Postularme</a>
+      </div>
+<br>
+
+
+</div>
+</div>
+</div>
+
+<!-- ****************************************** modal 2 -->
+
+<!-- ****************************************** modal 2 -->
+
+
+<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="exampleModalLabel">¿Desea despostularse?</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                          <h6>Podrá volver a postularse mientras el anuncio esté publicado</h6>
+                          <a class="btn btn-sm btn-warning mb-2 mt-4 float-left" href="/despostularse/{{post.id}}"
+                          aria-label="">
+                          Despostularme
+                          </a>
+                        </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Perfil{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+
+      <div class="mt-1 mb-5">
+        <div class="text-center mb-0">
+          <h1 for="">{{data.nombre}} {{data.apellido}}</h1>
+          <br>
+        </div>
+        <table class="table table-borderless text-center bg-transparent">
+          <tbody>
+            <tr>
+              <td>
+                <a class="my-0 mr-md-auto" href="" aria-label="Home">
+                  <img src="{{ url_for('static', filename=data.foto)}}" alt="" width="125"
+                    height="125">
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {% if data.promedioCalificacion %}
+                  <img style="margin-bottom: 0.3rem !important;"
+                    {% if data.promedioCalificacion < 1 %}
+                      src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+                    {% elif data.promedioCalificacion >= 1 and data.promedioCalificacion < 1.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+                    {% elif data.promedioCalificacion >= 1.5 and data.promedioCalificacion < 2 %}
+                      src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+                    {% elif data.promedioCalificacion >= 2 and data.promedioCalificacion < 2.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 2.5 and data.promedioCalificacion < 3 %}
+                      src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 3 and data.promedioCalificacion < 3.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 3.5 and data.promedioCalificacion < 4 %}
+                      src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 4 and data.promedioCalificacion < 4.5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+                    {% elif data.promedioCalificacion >= 4.5 and data.promedioCalificacion < 5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+                    {% elif data.promedioCalificacion == 5 %}
+                      src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+                    {% endif %}
+                    alt="" width="188" height="41">
+                    <p style="font-size: 0.8em important; text-align: center important;">
+                      De {{cal['cantEmpleadores']}}
+                      {% if cal['cantEmpleadores'] == 1 %}
+                      calificante
+                      {% else %}
+                      calificantes
+                      {% endif %}
+                      por {{cal['cantVinculos']}} 
+                      {% if cal['cantVinculos'] == 1 %}
+                      vínculo
+                      {% else %}
+                      vínculos
+                      {% endif %}
+                    </p>
+                {% else %}
+                <p>Sin calificaciones aún.</p>
+                {% endif %}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                {% if tipo == 'Empleado' %}
+                <textarea
+                  class="border-1 text-decoration-none bg-transparent text-small font-weight-bold font-italic"
+                  name="presentacion" rows="10" cols="35" placeholder="" disabled>{{data.descripcion}}</textarea>
+                {% endif %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <form class="needs-validation" novalidate="" action="" method="POST">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="nacionalidad">Nacionalidad</label>
+            <input type="text" class="form-control" name="nacionalidad" id="nacionalidad" placeholder="Uruguayo"
+              value="{{data.nacionalidad}}" readonly>
+          </div>
+        </div>
+        
+        <div class="d-block my-3">
+            <p>Género</p>
+            <div class="custom-control custom-radio">
+                <input id="genderF" name="genero" type="radio" class="custom-control-input" required="" disabled value="0" {% if data.genero == 0 %} checked {% endif %}>
+                <label class="custom-control-label" for="genderF">Femenino</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input id="genderM" name="genero" type="radio" class="custom-control-input" required="" disabled value="1" {% if data.genero == 1 %} checked {% endif %}>
+                <label class="custom-control-label" for="genderM">Masculino</label>
+            </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="birthdate">Fecha de nacimiento</label>
+          <input type="date" class="form-control col-sm-3" name="cumple" id="cumple" value="{{data.nacimiento}}"
+            required="" readonly>
+          <div class="invalid-feedback">
+            Por favor seleccione una Fecha de nacimiento válida.
+          </div>
+        </div>
+
+        {% if tipo == 'Empleado' %}
+        <hr class="mt-5 mb-5">
+        <div class="d-block my-3">
+            <p>¿Tiene experiencia en el rubro?</p>
+
+            <div class="custom-control custom-radio">
+                <input id="experienciaSi" name="experiencia" type="radio" class="custom-control-input" disabled required="" value="1" {% if data.experiencia_meses is not none or data.experiencia_meses != 0 %} checked {% endif %}>
+                <label class="custom-control-label" for="experienciaSi">Si</label>
+            </div>
+            <div class="custom-control custom-radio">
+                <input id="experienciaNo" name="experiencia" type="radio" class="custom-control-input" disabled required="" value="0" {% if data.experiencia_meses is none or data.experiencia_meses == 0 %} checked {% endif %}>
+                <label class="custom-control-label" for="experienciaNo">No</label>
+            </div>
+
+        </div>
+
+        <div class="mb-3">
+            <label for="mesesExperiencia">Meses de experiencia</label>
+            <input type="text" class="form-control col-sm-2" name="mesesExperiencia" id="mesesExperiencia"
+                    placeholder="0" disabled value="{{data.experiencia_meses}}">
+            <div class="invalid-feedback">
+                Por favor seleccione una cantidad de meses válida.
+            </div>
+        </div>
+
+        <div class="d-block my-3">
+            <p>Disponibilidad</p>
+            {% for disp in aux.disponibilidad %}
+            <div class="custom-control custom-checkbox">
+                <input id="disp{{ disp.id}}" name="disp{{ disp.id }}" type="checkbox"
+                        class="custom-control-input" disabled {% if disp.seleccionada == 1 %} checked {% endif %}>
+                <label class="custom-control-label" for="disp{{ disp.id }}">{{ disp.descripcion }}</label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="d-block my-3">
+            <p>Tareas que realizas</p>
+            {% for tarea in aux.tareas %}
+            <div class="custom-control custom-checkbox">
+                <input id="tarea{{ tarea.id }}" name="tarea{{ tarea.id }}" type="checkbox"
+                        class="custom-control-input" disabled {% if tarea.seleccionada == 1 %} checked {% endif %}>
+                <label class="custom-control-label" for="tarea{{ tarea.id }}">{{ tarea.descripcion }}</label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <hr class="mt-5 mb-5">
+
+        {% elif tipo == 'Empleador' %}
+        <hr class="mt-5 mb-5">
+        <div class="d-block my-3">
+          <p>¿Estás registrad@ como empleador/a en el BPS?</p>
+          <div class="custom-control custom-radio">
+            <input id="bpsSi" name="bps" type="radio" class="custom-control-input" checked="" required="" disabled>
+            <label class="custom-control-label" for="bpsSi">Si</label>
+          </div>
+          <div class="custom-control custom-radio">
+            <input id="bpsNo" name="bps" type="radio" class="custom-control-input" required="" disabled>
+            <label class="custom-control-label" for="bpsNo">No</label>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="empleadorNumRegBPS">Número de registro</label>
+          <input type="text" class="form-control col-sm-5" name="empleadorNumRegBPS" id="empleadorNumRegBPS"
+            placeholder="679102987" disabled>
+          <div class="invalid-feedback">
+            Por favor seleccione un Número de registro válido.
+          </div>
+        </div>
+
+        <hr class="mt-5 mb-5">
+        {% endif %}
+
+        {% if not data.referencias %}
+        <div class="row mb-5">
+            <button type="button" class="btn btn-secondary btn-block" disabled>
+            <h5>No tiene ninguna referencia registrada</h5>
+            </button>
+        </div>     
+        {% else %}
+        <button type="button" class="btn btn-secondary btn-block" disabled><h5>Referencias laborales</h5></button>
+        <div class="mt-1 mb-5">
+            <table class="table table-bordered table bg-white">
+                <thead>
+                    <tr>
+                        <td>Nombre</td>
+                        <td>Apellido</td>
+                        <td>Teléfono</td>
+                        <td class="tb_full">Desde</td>
+                        <td class="tb_full">Hasta</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for referencia in data.referencias %}
+                    <tr>
+                        <td>{{referencia.nombre}}</td>
+                        <td>{{referencia.apellido}}</td>
+                        <td>{{referencia.telefono}}</td>
+                        <td class="tb_full">{{referencia.fechaDesde.strftime('%d/%m/%Y')}}</td>
+                        <td class="tb_full">{{referencia.fechaHasta.strftime('%d/%m/%Y')}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <hr class="mt-5 mb-5">
+
+        <p class="mt-5 mb-2">
+        <button type="button" class="btn btn-primary btn-block float-right" onClick="history.go(-1)">Volver</button>
+        <br>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

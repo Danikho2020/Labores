@@ -1,0 +1,61 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Contacto{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-5 mb-5">Contacto</h1>
+      <form>
+        <div class="form-group mb-4">
+          <label for="InputName">Nombre</label>
+          <input type="text" class="form-control" id="InputName" name="nombre">
+        </div>
+        <div class="form-group mb-4">
+          <label for="InputEmail">Email</label>
+          <input type="email" class="form-control" id="InputEmail" name="mail" placeholder="name@example.com">
+        </div>
+        <div class="form-group mb-4">
+          <label for="InputMessage">Mensaje</label>
+          <textarea class="form-control" id="InputMessage" rows="3" name="mensaje"></textarea>
+        </div>
+        <div class="form-group mt-5">
+          <a class="btn btn-success" href="" name="btnEnviar" aria-label="" data-toggle="modal"
+                    data-target="#modal">Enviar</a>
+        </div>
+
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="mensaje"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h6 class="modal-title" id="exampleModalLabel">Mensaje</h6>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <h4>Funcionalidad no implementada</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+      </form>
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary mt-4" onClick="history.go(-1)">Volver</button>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}

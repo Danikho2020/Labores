@@ -1,0 +1,270 @@
+{% extends 'page_layout.html' %}
+
+{% block referencias %}
+{% endblock %}
+
+{% block estilo %}
+{% endblock %}
+
+{% block titulo %}Labores - Página Principal{% endblock %}
+
+{% block contenido %}
+<div class="container">
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+
+      {% with messages = get_flashed_messages()  %}
+      {% if messages %}
+      {% for message in messages %}
+      <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="ModalLabel">Mensaje</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <h4>{{ message }}</h4>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">CERRAR</button>
+          </div>
+          </div>
+      </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+      {# si tiene recordatorios para el día debo mostrar ventana modal para que los pueda resolver o posponer #}
+      {% if recordatoriosDelDia() is not none %}
+      <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Recordatorios</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% set cant_recordatorios = recordatoriosDelDia()|length %}
+            {% if cant_recordatorios == 0 %}
+            <div class="modal-body">
+                <h4>No tiene más recordatorios para hoy</h4>
+            </div>
+            {% else %}
+            <div class="modal-body">             
+              {% for recordatorio in recordatoriosDelDia() %}
+              {% if recordatorio.tipo == 1 %}
+              <form class="mb-3" action="/calificarVinculosPendientes/False" method="POST" name="cal" onsubmit="return validateForm()">
+                  <div class="container border-top border-bottom border-left border-right border-dark bg-light">
+                      <div class="mt-4 ml-5">
+                          <h4 class="display-5 font-italic font-weight-bold">{{recordatorio.leyenda}}</h4>
+                          <p class="mt-4">
+                              <input type="hidden" name="ventanaModal" />
+                              <input type="hidden" name="idRecordatorio" value="{{recordatorio.id}}" />
+                              <input type="hidden" name="idVinculo" value="{{recordatorio.vinculo.id}}" />
+                              <input type="hidden" name="cant_recordatorios" value="{{cant_recordatorios}}" />
+                              Vínculo iniciado en <strong>{{recordatorio.vinculo.fecha_inicio.strftime('%d/%m/%Y')}} </strong>
+                              {% if recordatorio.vinculo.fecha_fin == None %}
+                              hasta <strong>[Vínculo activo]</strong><br>
+                              {% else %}
+                              hasta <strong>{{recordatorio.vinculo.fecha_fin.strftime('%d/%m/%Y')}}</strong><br>
+                              {% endif %}
+                              Empleador: <input class="font-weight-bold text-center w-50" disabled type="text" name="empleador" value="{{recordatorio.empleador.nombre}} {{recordatorio.empleador.apellido}}" /><br>
+                              <br>
+                              Título del Anuncio: <strong>{{recordatorio.anuncio.titulo}}</strong><br>
+                              Descripción del Anuncio: <strong>{{recordatorio.anuncio.descripcion}}</strong><br>
+                              Fecha del Anuncio: <strong>{{recordatorio.anuncio.fecha_inicio.strftime('%d/%m/%Y')}}</strong>
+                          </p>
+                          <div class="form-group">
+                              <div class="star-rating">
+                                  <input id="star-5{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="5" />
+                                  <label for="star-5{{recordatorio.vinculo.id}}" title="5 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-4{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="4" />
+                                  <label for="star-4{{recordatorio.vinculo.id}}" title="4 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-3{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="3" />
+                                  <label for="star-3{{recordatorio.vinculo.id}}" title="3 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-2{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="2" />
+                                  <label for="star-2{{recordatorio.vinculo.id}}" title="2 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                                  <input id="star-1{{recordatorio.vinculo.id}}" type="radio" name="rating{{recordatorio.vinculo.id}}" value="1" />
+                                  <label for="star-1{{recordatorio.vinculo.id}}" title="1 estrellas">
+                                      <i class="active fa fa-star" aria-hidden="true"></i>
+                                  </label>
+                              </div>
+                              <br>
+                              <button class="btn btn-success ml-5" type="submit" name="btnCalificarAhora">Calificar ahora</button>
+                              {# si ya aplazó 2 veces no puede volver a aplazar #}
+                              {% if recordatorio.cantVecesAplazado < 2 %}
+                              <button class="btn btn-warning ml-5" type="submit" name="btnCalificarLuego">Recuerdame en 3 meses</button>
+                              {% endif %}
+                          </div>
+                      </div>
+                  </div>
+              </form>
+              {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
+            <div class="modal-footer">
+                {# al botón de posponer todos por el momento le pongo una condición que no se cumpla nunca para no mostrarlo #}
+                {# ya que la lógica sería bastante compleja, tendría que hacer el post de cada form del modal, no da en este momento #}
+                <button class="btn btn-warning mr-2" type="submit" name="btnCalificarLuegoTodos" 
+                {% if cant_recordatorios != -1 %}hidden{% endif %}>Posponer todos</button>
+            </div>
+            </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="text-center mb-4">
+          <p class="lead">
+              {% if tieneNotifPendientesVinculos %}
+              <a class="my-0 mr-md-auto" href="/MisVinculos" aria-label="Home">
+                  <img class="mr-0" src="{{ url_for('static', filename='images/Alertas/Vinculo.png')}}" alt=""
+                      width="80" height="80">
+              </a>
+              {% else %}
+              <a class="my-0 mr-md-auto" href="/MisVinculos" aria-label="Home">
+                  <img class="mr-0" src="{{ url_for('static', filename='images/Alertas/NoVinculo.png')}}" alt=""
+                      width="80" height="80">
+              </a>
+              {% endif %}
+
+              {% if tieneRecordatorios %}
+              <a class="my-0 mr-md-auto" href="/CalificacionesPendientes" aria-label="Home">
+                <img class="ml-0 mr-0" src="{{ url_for('static', filename='images/Alertas/Recordatorio.png')}}" alt="" width="80"
+                  height="80">
+              </a>
+              {% else %}
+                <img class="" src="{{ url_for('static', filename='images/Alertas/NoRecordatorio.png')}}" alt="" width="80"
+                  height="80">
+              {% endif %}
+
+              {% if tieneMensajesSinLeer %}
+              <a class="my-0 mr-md-auto" href="/MensajesEmpleado/{{sujeto.id}}/0" aria-label="Home">
+                  <img class="ml-0" src="{{ url_for('static', filename='images/Alertas/Mensaje.png')}}" alt=""
+                      width="80" height="80">
+              </a>
+              {% else %}
+              <a class="my-0 mr-md-auto" href="/MensajesEmpleado/{{sujeto.id}}/0" aria-label="Home">
+                  <img class="ml-0" src="{{ url_for('static', filename='images/Alertas/NoMensaje.png')}}" alt=""
+                      width="80" height="80">
+              </a>
+              {% endif %}
+          </p>
+          <img class="mb-4" src="{{ url_for('static', filename=sujeto.foto)}}" alt="" width="125" height="125"><br>
+
+          {% if sujeto.promedioCalificacion %}
+          <img class="mt-4 mb-4" style="margin-bottom: 0.3rem !important; margin: 0.3em !important;"
+            {% if sujeto.promedioCalificacion < 1 %}
+              src="{{ url_for('static', filename='images/Estrellas/05star.png')}}"
+            {% elif sujeto.promedioCalificacion >= 1 and sujeto.promedioCalificacion < 1.5 %}
+              src="{{ url_for('static', filename='images/Estrellas/10star.png')}}"
+            {% elif sujeto.promedioCalificacion >= 1.5 and sujeto.promedioCalificacion < 2 %}
+              src="{{ url_for('static', filename='images/Estrellas/15star.png')}}"
+            {% elif sujeto.promedioCalificacion >= 2 and sujeto.promedioCalificacion < 2.5 %}
+              src="{{ url_for('static', filename='images/Estrellas/20star.png')}}"                      
+            {% elif sujeto.promedioCalificacion >= 2.5 and sujeto.promedioCalificacion < 3 %}
+              src="{{ url_for('static', filename='images/Estrellas/25star.png')}}"                      
+            {% elif sujeto.promedioCalificacion >= 3 and sujeto.promedioCalificacion < 3.5 %}
+              src="{{ url_for('static', filename='images/Estrellas/30star.png')}}"                      
+            {% elif sujeto.promedioCalificacion >= 3.5 and sujeto.promedioCalificacion < 4 %}
+              src="{{ url_for('static', filename='images/Estrellas/35star.png')}}"                      
+            {% elif sujeto.promedioCalificacion >= 4 and sujeto.promedioCalificacion < 4.5 %}
+              src="{{ url_for('static', filename='images/Estrellas/40star.png')}}"                      
+            {% elif sujeto.promedioCalificacion >= 4.5 and sujeto.promedioCalificacion < 5 %}
+              src="{{ url_for('static', filename='images/Estrellas/45star.png')}}"    
+            {% elif sujeto.promedioCalificacion == 5 %}
+              src="{{ url_for('static', filename='images/Estrellas/50star.png')}}"
+            {% endif %}
+            alt="" width="188" height="41">
+            <p style="font-size: 0.8em important; text-align: center important;">
+              De {{cal['cantEmpleadores']}}
+              {% if cal['cantEmpleadores'] == 1 %}
+              calificante
+              {% else %}
+              calificantes
+              {% endif %}
+              por {{cal['cantVinculos']}} 
+              {% if cal['cantVinculos'] == 1 %}
+              vínculo
+              {% else %}
+              vínculos
+              {% endif %}
+            </p>
+        {% else %}
+        <p class="mt-4 mb-4">Sin calificaciones aún.</p>
+        {% endif %}
+          <p class="lead"><a href="/Perfil/Empleado">Editar perfil</a></p>
+      </div>
+
+      <div class="card-deck">
+          <div class="card mt-1 mb-1 ml-1 mr-1">
+              <a class="btn" href="/Anuncios">
+                  <div class="card-body">
+                      <h3 class="card-title text-center">Ver Anuncios</h3>
+                  </div>
+              </a>
+          </div>
+          <div class="card mt-1 mb-1 ml-1 mr-1">
+              <a class="btn" href="/MisPostulaciones">
+                  <div class="card-body">
+                      <h3 class="card-title text-center">Mis Postulaciones</h3>
+                  </div>
+              </a>
+          </div>
+      </div>
+
+      <div class="card-deck">
+          <div class="card mt-1 mb-1 ml-1 mr-1">
+              <a class="btn" href="/MisVinculos">
+                  <div class="card-body">
+                      <h3 class="card-title text-center">Mis Vínculos</h3>
+                  </div>
+              </a>
+          </div>
+          <div class="card mt-1 mb-1 ml-1 mr-1">
+              <a class="btn" href="/MensajesEmpleado/{{sujeto.id}}/0">
+                  <div class="card-body">
+                      <h3 class="card-title text-center">Mensajes</h3>
+                  </div>
+              </a>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $("#Modal").modal({
+            backdrop: 'static',
+            keyboard: false
+        })
+        $('#Modal').modal('show');
+    });
+</script>
+
+<script type="text/javascript">
+    $("#btnCerrarModal").click(function(){
+        window.location.reload();
+    });
+</script>
+
+<script type="text/javascript">
+    $('#Modal .close').css('display', 'none');
+</script>
+{% endblock %}
